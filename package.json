@@ -27,7 +27,7 @@
     "debug": "4",
     "nan": "^2.13.2",
     "ref": "github:APshenkin/ref#b79cd88",
-    "ref-struct": "github:APshenkin/ref-struct#ea4c44f"
+    "ref-struct": "github:APshenkin/ref-struct#a9c2854"
   },
   "devDependencies": {
     "fs-extra": "^7.0.1",
