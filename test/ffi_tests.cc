@@ -165,10 +165,12 @@ NAN_METHOD(Strtoul) {
 
   Nan::Utf8String buf(info[0]);
 
+  auto context = v8::Isolate::GetCurrent()->GetCurrentContext();
+
   Local<Value> endptr_arg = info[1];
   endptr = (char **)Buffer::Data(endptr_arg.As<Object>());
 
-  base = info[2]->Int32Value();
+  base = info[2]->Int32Value(context).ToChecked();
 
   unsigned long val = strtoul(*buf, endptr, base);
 
@@ -291,7 +293,7 @@ inline Local<Value> WrapPointer(char *ptr) {
   return WrapPointer(ptr, 0);
 }
 
-void Initialize(Handle<Object> target) {
+void Initialize(Local<Object> target) {
   Nan::HandleScope();
 
 #if WIN32
@@ -300,6 +302,8 @@ void Initialize(Handle<Object> target) {
   // http://support.microsoft.com/kb/37507
   float x = 2.3f;
 #endif
+
+  auto context = v8::Isolate::GetCurrent()->GetCurrentContext();
 
   // atoi and abs here for testing purposes
   target->Set(Nan::New<String>("atoi").ToLocalChecked(), WrapPointer((char *)atoi));
@@ -313,16 +317,16 @@ void Initialize(Handle<Object> target) {
 
   // hard-coded `strtoul` binding, for the benchmarks
   Nan::Set(target, Nan::New<String>("strtoul").ToLocalChecked(),
-    Nan::New<FunctionTemplate>(Strtoul)->GetFunction());
+    Nan::New<FunctionTemplate>(Strtoul)->GetFunction(context).ToLocalChecked());
 
   Nan::Set(target, Nan::New<String>("set_cb").ToLocalChecked(),
-    Nan::New<FunctionTemplate>(SetCb)->GetFunction());
+    Nan::New<FunctionTemplate>(SetCb)->GetFunction(context).ToLocalChecked());
   Nan::Set(target, Nan::New<String>("call_cb").ToLocalChecked(),
-    Nan::New<FunctionTemplate>(CallCb)->GetFunction());
+    Nan::New<FunctionTemplate>(CallCb)->GetFunction(context).ToLocalChecked());
   Nan::Set(target, Nan::New<String>("call_cb_from_thread").ToLocalChecked(),
-    Nan::New<FunctionTemplate>(CallCbFromThread)->GetFunction());
+    Nan::New<FunctionTemplate>(CallCbFromThread)->GetFunction(context).ToLocalChecked());
   Nan::Set(target, Nan::New<String>("call_cb_async").ToLocalChecked(),
-    Nan::New<FunctionTemplate>(CallCbAsync)->GetFunction());
+    Nan::New<FunctionTemplate>(CallCbAsync)->GetFunction(context).ToLocalChecked());
 
   // also need to test these custom functions
   target->Set(Nan::New<String>("double_box").ToLocalChecked(), WrapPointer((char *)double_box));
