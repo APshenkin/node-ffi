@@ -26,13 +26,13 @@
     "bindings": "~1.5.0",
     "debug": "4",
     "nan": "^2.13.2",
-    "ref": "github:APshenkin/ref#9ca8873",
-    "ref-struct": "github:APshenkin/ref-struct#32d50b2"
+    "ref": "github:APshenkin/ref#b79cd88",
+    "ref-struct": "github:APshenkin/ref-struct#ea4c44f"
   },
   "devDependencies": {
     "fs-extra": "^7.0.1",
     "mocha": "*",
-    "ref-array": "github:APshenkin/ref-array#249413b"
+    "ref-array": "github:APshenkin/ref-array#6a270a3"
   },
   "scripts": {
     "test": "node-gyp rebuild --directory test && mocha --gc-global --expose-gc --reporter spec"
